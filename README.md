@@ -6,7 +6,7 @@ This project simulates IoT-based temperature monitoring with a real-time dashboa
 
 - **IoTBackend**: Receives and processes temperature data, potentially storing it in a database or exposing APIs.
 - **MqttReceiver**: A service that listens to MQTT messages and routes them to the backend.
-- **TemperatureDashboard**: A web interface (possibly with SignalR or WebSocket) to display real-time temperature updates.
+- **TemperatureDashboard**: A web interface possibly with SignalR  to display real-time temperature updates.
 - **TempratureSimulator**: Simulates sensor data and publishes it to MQTT topics.
 
 ## 🚀 Getting Started
