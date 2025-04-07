@@ -1,0 +1,125 @@
+﻿@page "/TempratureHub"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.SignalR.Client
+@using TemperatureDashboard.Models
+@using LiveChartsCore;
+@using LiveChartsCore.SkiaSharpView;
+@using LiveChartsCore.SkiaSharpView.Blazor;
+
+<PageTitle>Temperature</PageTitle>
+
+<h3>Real-Time Temperature Dashboard</h3>
+
+@if (!string.IsNullOrWhiteSpace(ollamaSummary))
+{
+    <h4>LLM Analysis</h4>
+    <pre class="wrapped-output">@ollamaSummary</pre>
+}
+
+@if (readings.Count == 0)
+{
+    <p><em>Waiting for temperature readings...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Device ID</th>
+                <th>Temperature (°C)</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in PaginatedReadings)
+            {
+                <tr>
+                    <td>@r.DeviceId</td>
+                    <td>@r.Temperature</td>
+                    <td>@r.Timestamp.ToLocalTime().ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <div class="d-flex justify-content-between mt-2">
+                        <button class="btn btn-sm btn-primary" @onclick="PreviousPage" disabled="@(currentPage == 1)">Previous</button>
+                        <span>Page @currentPage of @TotalPages</span>
+                        <button class="btn btn-sm btn-primary" @onclick="NextPage" disabled="@(currentPage == TotalPages)">Next</button>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+}
+
+@code {
+    private HubConnection? hubConnection;
+    private List<TemperatureReading> readings = new();
+    private TemperatureSeries chart = new();
+    private string ollamaSummary = string.Empty;
+
+    private int currentPage = 1;
+    private int pageSize = 10;
+
+    private IEnumerable<TemperatureReading> PaginatedReadings =>
+        readings.Skip((currentPage - 1) * pageSize).Take(pageSize);
+
+    private int TotalPages => (int)Math.Ceiling((double)readings.Count / pageSize);
+
+    private int lastAnalyzedIndex = 0;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5177/temperaturehub")
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string, double, DateTime>("ReceiveTemperature",async (deviceId, temp, timestamp) =>
+        {
+            await InvokeAsync(async () =>
+            {
+                var reading = new TemperatureReading
+                    {
+                        DeviceId = deviceId,
+                        Temperature = temp,
+                        Timestamp = timestamp
+                    };
+
+                readings.Add(reading);
+
+                if (readings.Count - lastAnalyzedIndex >= 10)
+                {
+                    var batch = readings.Skip(lastAnalyzedIndex).Take(10).ToList();
+
+                    var result = await batch.AnalyzeTemperatureDataAsync();
+                    ollamaSummary = result;
+
+                    lastAnalyzedIndex += 10; 
+                }
+
+                StateHasChanged();
+            });
+        });
+
+        await hubConnection.StartAsync();
+
+    }
+
+    private void NextPage()
+    {
+        if (currentPage < TotalPages)
+            currentPage++;
+    }
+
+    private void PreviousPage()
+    {
+        if (currentPage > 1)
+            currentPage--;
+    }
+}

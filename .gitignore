@@ -1,0 +1,54 @@
+## Ignore Visual Studio files
+.vs/
+*.user
+*.suo
+
+## Ignore build results
+bin/
+obj/
+
+## Ignore Rider IDE files
+.idea/
+
+## Ignore build artifacts
+*.dll
+*.exe
+*.app
+*.pdb
+*.cache
+*.log
+
+## Ignore NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+
+## Ignore user-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+## Ignore config secrets
+appsettings.*.json
+
+## Ignore publish output
+publish/
+*.db
+
+## OS-specific
+.DS_Store
+Thumbs.db
+
+## MQTT or IoT related (if logs or dumps created)
+*.dump
+*.trace
+*.log
+
+## Docker artifacts (if any)
+**/docker-compose.override.yml
+**/.docker/
+
+## Ignore environment files
+.env
+.env.*
