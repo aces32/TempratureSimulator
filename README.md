@@ -46,8 +46,7 @@ This project simulates IoT-based temperature monitoring with a real-time dashboa
 - C# / .NET
 - MQTT
 - ASP.NET Core
-- SignalR (if used)
-- Docker (optional)
+- SignalR 
 
 ## 📦 Future Improvements
 
