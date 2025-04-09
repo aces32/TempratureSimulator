@@ -1,54 +1,64 @@
-## Ignore Visual Studio files
+#############################################
+#           VISUAL STUDIO / .NET
+#############################################
+
+## User-specific files
 .vs/
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
 
-## Ignore build results
+## Build results
 bin/
 obj/
+publish/
 
-## Ignore Rider IDE files
+## Rider IDE
 .idea/
+*.iml
 
-## Ignore build artifacts
-*.dll
-*.exe
-*.app
-*.pdb
-*.cache
-*.log
-
-## Ignore NuGet packages
+## NuGet packages
 *.nupkg
 *.snupkg
 packages/
 *.nuspec
 
-## Ignore user-specific files
-*.user
-*.userosscache
-*.sln.docstates
-
-## Ignore config secrets
+## Config / Secrets
 appsettings.*.json
-
-## Ignore publish output
-publish/
 *.db
-
-## OS-specific
-.DS_Store
-Thumbs.db
-
-## MQTT or IoT related (if logs or dumps created)
-*.dump
-*.trace
+*.pdb
+*.cache
 *.log
+*.dll
+*.exe
+*.app
 
-## Docker artifacts (if any)
-**/docker-compose.override.yml
-**/.docker/
+#############################################
+#               PYTHON
+#############################################
 
-## Ignore environment files
-.env
-.env.*
+# Bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Pipenv / Poetry
+Pipfile.lock
+poetry.lock
+
+# MyPy / Coverage / Testing
+.mypy_cache/

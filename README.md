@@ -10,6 +10,7 @@ This project simulates IoT-based temperature monitoring with a real-time dashboa
 - **TempratureSimulator**: Simulates sensor data and publishes it to MQTT topics.
 
 ## 🚀 Getting Started
+## .NET Components
 
 1. Clone the repository:
    ```bash
@@ -38,6 +39,18 @@ This project simulates IoT-based temperature monitoring with a real-time dashboa
    dotnet run --project IoTBackend
    dotnet run --project TemperatureDashboard
    ```
+## Python Component   
+6. Set up the Python environment for SensorDataLogger:
+   ```bash
+	cd SensorDataLogger
+	python -m venv venv
+	source venv/bin/activate  # or venv\Scripts\activate on Windows
+	pip install -r requirements.txt
+   ```
+5. Run the logger:
+   ```bash
+   python main.py
+   ```   
 
 > ⚠️ Make sure you have an MQTT broker running (e.g., Mosquitto on localhost) before launching the services.
 
@@ -46,7 +59,8 @@ This project simulates IoT-based temperature monitoring with a real-time dashboa
 - C# / .NET
 - MQTT
 - ASP.NET Core
-- SignalR (if used)
+- SignalR 
+- Ollama / LLM
 - Docker (optional)
 
 ## 📦 Future Improvements
